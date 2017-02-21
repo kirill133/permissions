@@ -19,6 +19,10 @@ apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'docker'
 
+bootRun {
+	systemProperties System.properties
+}
+
 task buildDocker(type: Docker, dependsOn: build) {
 	push = false
 	applicationName = jar.baseName
