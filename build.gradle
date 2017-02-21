@@ -1,5 +1,7 @@
 buildscript {
 	ext {
+		fileVersion = '0.0.1'
+		manifestVersion = '0.0.1-SNAPSHOT'
 		springBootVersion = '2.0.0.BUILD-SNAPSHOT'
 		dockerVersion = '1.2'
 	}
@@ -27,11 +29,20 @@ task buildDocker(type: Docker, dependsOn: build) {
 	push = false
 	applicationName = jar.baseName
 	dockerfile = file('src/main/docker/Dockerfile')
+	doFirst {
+		copy {
+			from jar
+			into stageDir
+		}
+	}
 }
 
 jar {
+	version = project.fileVersion
+	manifest{
+		attributes "Implementation-version": project.manifestVersion
+	}
 	baseName = 'permissions'
-	version = '0.0.1-SNAPSHOT'
 }
 
 sourceCompatibility = 1.8
